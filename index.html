@@ -115,15 +115,21 @@ body,.about-section,dialog,.recipe-image-panel,.ratio{transition:background-colo
 
 /* A small invitation to let the current collection choose. */
 .random-pick-group{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
-.random-pick{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:46px;padding:12px 18px;border:1px solid var(--ink);border-radius:3px;background:var(--ink);color:var(--paper);font-size:12px;letter-spacing:.6px;transition:background-color .2s,transform .2s}
+.random-pick{--random-fill:var(--ink);position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:46px;padding:12px 18px;border:1px solid transparent;border-radius:5px;background:var(--random-fill);color:var(--paper);font-size:12px;letter-spacing:.6px;box-shadow:0 3px 16px #c9739826;transition:transform .2s,box-shadow .2s}
+.random-pick-border{position:absolute;inset:-1px;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:0;background:#d77fa7}
+.random-pick-border>span{position:absolute;left:50%;top:50%;width:150%;aspect-ratio:1;background:conic-gradient(from 0deg,#b95c8b 0deg,#df8fb4 75deg,#fff0f7 110deg,#ff9dca 140deg,#b95c8b 185deg,#df8fb4 255deg,#fff0f7 290deg,#ff9dca 320deg,#b95c8b 360deg);transform:translate(-50%,-50%) rotate(0turn);animation:random-pink-flow 3.6s linear infinite}
+.random-pick-border::after{content:'';position:absolute;inset:2px;border-radius:3px;background:var(--random-fill)}
+.random-pick>svg,.random-pick>span:not(.random-pick-border){position:relative;z-index:1}
+@keyframes random-pink-flow{0%{transform:translate(-50%,-50%) rotate(0deg)}50%{transform:translate(-50%,-50%) rotate(180deg)}100%{transform:translate(-50%,-50%) rotate(360deg)}}
 .random-pick svg{width:18px;height:18px;stroke-width:1.4;flex-shrink:0}
 .random-pick-arrow{font-size:20px;line-height:1;margin-left:6px}
-.random-pick:hover:not(:disabled){background:#365343;transform:translateY(-1px)}
+.random-pick:hover:not(:disabled){--random-fill:#365343;transform:translateY(-1px);box-shadow:0 4px 22px #d77fa742}
 .random-pick-group>p{font-size:10px;line-height:1.7;color:var(--muted);letter-spacing:.4px;margin:0}
 .random-pick:disabled{opacity:.45;cursor:not-allowed}
+.random-pick:disabled .random-pick-border>span{animation-play-state:paused}
 .recipe-actions{flex-wrap:wrap}
-[data-theme='dark'] .random-pick{background:#b5a6fb;border-color:#b5a6fb;color:#17142b;box-shadow:0 4px 18px #a176ac17}
-[data-theme='dark'] .random-pick:hover:not(:disabled){background:#c8baff;border-color:#c8baff}
+[data-theme='dark'] .random-pick{--random-fill:#b5a6fb;color:#17142b;box-shadow:0 3px 22px #df80b240}
+[data-theme='dark'] .random-pick:hover:not(:disabled){--random-fill:#c8baff;box-shadow:0 4px 28px #ef9dca59}
 @media(max-width:560px){.random-pick-group{align-items:stretch;margin-top:21px;gap:7px}.random-pick{width:100%;min-height:44px;padding:11px 16px;font-size:12px}.random-pick-group>p{text-align:center;font-size:9px}.random-pick-arrow{margin-left:4px}}
 
 /* A small deck: draw a card, turn it over, then explore the recipe. */
@@ -227,6 +233,7 @@ body,.about-section,dialog,.recipe-image-panel,.ratio{transition:background-colo
         <div><div class="eyebrow">THE COCKTAIL COLLECTION</div><h1 id="menu-title">经典鸡尾酒<span>.</span></h1></div>
         <div class="random-pick-group">
           <button class="random-pick" id="random-pick" type="button" aria-haspopup="dialog" aria-controls="draw-dialog">
+            <span class="random-pick-border" aria-hidden="true"><span></span></span>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c2.3 0 4-2.5 5.5-5m1-2C14 8.5 15.7 6 18 6h3m-4-4 4 4-4 4"/></svg>
             <span>随机为我挑选一杯</span><span class="random-pick-arrow" aria-hidden="true">↗</span>
           </button>
